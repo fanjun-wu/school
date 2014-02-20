@@ -38,4 +38,10 @@ public class StudentServiceImpl implements StudentService {
 		return studentDao.getAllStudent();
 	}
 
+	@Transactional
+	public void addStudenttoCollege(int studentId, int collegeId) {
+		// TODO Auto-generated method stub
+		studentDao.addStudenttoCollege(studentId, collegeId);
+	}
+
 }

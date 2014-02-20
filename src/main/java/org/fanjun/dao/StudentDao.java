@@ -10,4 +10,5 @@ public interface StudentDao {
 	public void delete(int studentId);
 	public Student getStudent(int studentId);
 	public List getAllStudent();
+	public void addStudenttoCollege(int studentId,int collegeId);
 }

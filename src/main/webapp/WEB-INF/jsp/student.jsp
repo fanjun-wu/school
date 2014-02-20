@@ -27,6 +27,9 @@
 			<td>Year Level</td>
 			<td><form:input path="yearLevel" /></td>
 		</tr>
+		
+		
+		
 		<tr>
 			<td colspan="2">
 				<input type="submit" name="action" value="Add" />
@@ -36,21 +39,43 @@
 			</td>
 		</tr>
 	</table>
-</form:form>
+<%-- </form:form> --%>
 <br>
 <table border="1">
 	<th>ID</th>
 	<th>First name</th>
 	<th>Last name</th>
 	<th>Year level</th>
+	<td>College </td>
 	<c:forEach items="${studentList}" var="student">
 		<tr>
 			<td>${student.studentId}</td>
 			<td>${student.firstname}</td>
 			<td>${student.lastname}</td>
 			<td>${student.yearLevel}</td>
+			
+			<c:if test="${empty student.college.collegeName}">
+			
+			
+  			 
+  			 <td> 
+  			 	<c:url var="JoinCollegeUrl" value="/join?id=${student.studentId}" />
+				
+				<td><a href="${JoinCollegeUrl}">+</a></td>
+  	
+  			 </td>
+  			 
+  			
+			</c:if>
+		<c:if test="${not empty student.college.collegeName}">
+   			 <td>${student.college.collegeName}</td>
+		</c:if>
+		
+			
+			
 		</tr>
 	</c:forEach>
 </table>
+</form:form>
 </body>
 </html>
