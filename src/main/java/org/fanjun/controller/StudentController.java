@@ -27,6 +27,18 @@ public class StudentController {
 	
 
 	
+	public StudentService getStudentService() {
+		return studentService;
+	}
+	public void setStudentService(StudentService studentService) {
+		this.studentService = studentService;
+	}
+	public CollegeService getCollegeService() {
+		return collegeService;
+	}
+	public void setCollegeService(CollegeService collegeService) {
+		this.collegeService = collegeService;
+	}
 	@RequestMapping("/index")
 	public String setupForm(Map<String, Object> map){
 		Student student = new Student();

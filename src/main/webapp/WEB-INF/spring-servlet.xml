@@ -15,20 +15,59 @@
 
 	
 	
-	<context:annotation-config />
-	<context:component-scan base-package="org.fanjun" />	
-		
+	 <context:annotation-config />
+ 	<context:component-scan base-package="org.fanjun" />	
+ 	<!-- <context:component-scan base-package="org.fanjun.controller" />	
+ 	<context:component-scan base-package="org.fanjun.dao.impl" />	
+ 	<context:component-scan base-package="org.fanjun.service.impl" />	 --> 
+	
+	<!-- <context:annotation-config />  Turn on Autowired
+<bean class="org.fanjun.controller.CollegeController" autowire="byType"></bean>
+<bean class="org.fanjun.controller.StudentController" autowire="byType"></bean>
+<bean class="org.fanjun.dao.impl.StudentDaoImpl" autowire="byType"></bean>
+<bean class="org.fanjun.dao.impl.CollegeDaoImp" autowire="byType"></bean>
+<bean class="org.fanjun.service.impl.CollegeServiceImpl" autowire="byType"></bean>
+<bean class="org.fanjun.service.impl.StudentServiceImpl" autowire="byType"></bean> -->
+	
+	<!-- <bean id="studentControl" class="org.fanjun.controller.StudentController">
+        <property name="studentService" ref="studentService" />
+         <property name="collegeService" ref="collegeService" />
+    </bean> 
+    <bean id="collegeControl" class="org.fanjun.controller.CollegeController">
+        
+         <property name="collegeService" ref="collegeService" />
+    </bean> 
+	
+	
+	<bean id="collegeService" class="org.fanjun.service.impl.CollegeServiceImpl">
+        <property name="collegeDao" ref="collegeDao" />
+    </bean> 
+	
+	
+	<bean id="studentService" class="org.fanjun.service.impl.StudentServiceImpl">
+        <property name="studentDao" ref="studentDao" />
+    </bean> 
+	-->
+	
+	<!-- User DAO Declaration -->
+<!--     <bean id="studentDao" class="org.fanjun.dao.impl.StudentDaoImpl">
+        <property name="session" ref="sessionFactory" />
+    </bean> 	
+    
+    <bean id="collegeDao" class="org.fanjun.dao.impl.CollegeDaoImp">
+        <property name="session" ref="sessionFactory" />
+    </bean> 	 -->	 
 	
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
 		p:location="/WEB-INF/jdbc.properties" />
 
-	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
 		p:url="${jdbc.databaseurl}" p:username="${jdbc.username}" p:password="${jdbc.password}" >
 	    <property name="validationQuery" value="SELECT 1"/>
   <property name="testOnBorrow" value="true"/>
-	</bean> -->
+	</bean>  -->
 	
 	<bean id="dataSource"
                 class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -39,10 +78,18 @@
                 <property name="driverClassName" 
                 	value="com.google.appengine.api.rdbms.AppEngineDriver" />
                 <property name="url" 
-                	value="jdbc:google:rdbms://newschool4you:school/school" />
+                	value="jdbc:google:rdbms://newschool4you:coll/demo" />
         </bean>
 	
-	<bean id="sessionFactory"
+	<!-- <bean id="dataSource"
+                class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+                <property name="driverClassName" value="${jdbc.driverClassName}" />
+                <property name="url" value="${jdbc.databaseurl}" />
+  	        <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
+        	</bean> -->
+	
+	<!-- <bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation">
@@ -55,11 +102,52 @@
 			<props>
 				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				
 				
 			</props>
 		</property>
-	</bean>
+	</bean> -->
+	
+	
+	
+	
+	
+	
+	   <!-- Hibernate session factory -->
+        <bean id="sessionFactory"
+                class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+
+                <property name="dataSource">
+                        <ref bean="dataSource" />
+                </property>
+                <property name="configLocation">
+			<value>classpath:hibernate.cfg.xml</value>
+		</property>
+		<property name="configurationClass">
+			<value>org.hibernate.cfg.AnnotationConfiguration</value>
+		</property>
+ 				
+                <property name="hibernateProperties">
+                        <props>
+                                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                                <prop key="hibernate.show_sql">true</prop>
+                                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                        </props>
+                </property>
+
+                
+
+        </bean>
+
+		<!-- hibernate Session -->
+		<bean id="session" scope="prototype"
+		factory-bean="sessionFactory"
+		factory-method="openSession"
+		depends-on="sessionFactory">
+		</bean>
+	
+	
+	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 	    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
 	    <property name="prefix" value="/WEB-INF/jsp/"/>

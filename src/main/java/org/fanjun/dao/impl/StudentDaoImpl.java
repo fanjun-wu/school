@@ -9,14 +9,18 @@ import org.fanjun.model.College;
 import org.fanjun.model.Student;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-@Repository
+//@Repository
+@Component
 public class StudentDaoImpl implements StudentDao {
 	@Autowired
 	@Resource(name="sessionFactory")
 	private SessionFactory session;
 	
+	
+
 	
 
 	@Override
